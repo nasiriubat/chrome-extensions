@@ -16,9 +16,7 @@ Follow these steps to download and load the extensions into Chrome.
 ## 2. Open Chrome Extensions Page
 
 1. Open **Google Chrome** (or any Chromium-based browser that supports extensions).
-2. In the address bar, go to:
-
-
+2. In the address bar, go to: Open Chrome and navigate to `chrome://extensions/`
 3. In the top-right corner, enable **Developer mode**  
 (toggle the switch so it turns on).
 
