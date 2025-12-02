@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credential Blurrer - Options</title>
+    <link rel="stylesheet" href="styles/options.css">
+</head>
+<body>
+    <div class="options-container">
+        <div class="header">
+            <h1>🔒 Credential Blurrer - Settings</h1>
+        </div>
+        
+        <div class="content">
+            <section class="settings-section">
+                <h2>General Settings</h2>
+                
+                <div class="setting-item">
+                    <label>
+                        <span>Blur Intensity</span>
+                        <input type="range" id="blurIntensity" min="2" max="20" value="8">
+                        <span class="value-display" id="blurIntensityValue">8px</span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="enabled">
+                        <span>Enable Credential Blurring</span>
+                    </label>
+                </div>
+            </section>
+            
+            <section class="settings-section">
+                <h2>Detection Types</h2>
+                
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="detectPasswords">
+                        <span>Detect Password Fields</span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="detectApiKeys">
+                        <span>Detect API Keys & Tokens</span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="detectEmails">
+                        <span>Detect Email Addresses</span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="detectUsernames">
+                        <span>Detect Username Fields</span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="detectCreditCards">
+                        <span>Detect Credit Card Numbers</span>
+                    </label>
+                </div>
+            </section>
+            
+            <section class="settings-section">
+                <h2>About</h2>
+                <p class="about-text">
+                    Credential Blurrer automatically detects and blurs sensitive information on web pages 
+                    to protect your privacy when screen sharing or recording. Hover over blurred elements 
+                    to temporarily reveal them.
+                </p>
+                <p class="about-text">
+                    All processing happens locally in your browser. No data is sent to external servers.
+                </p>
+            </section>
+            
+            <div class="actions">
+                <button id="saveBtn" class="btn btn-primary">Save Settings</button>
+                <button id="resetBtn" class="btn btn-secondary">Reset to Defaults</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="options.js"></script>
+</body>
+</html>
+

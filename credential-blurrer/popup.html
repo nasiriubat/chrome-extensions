@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credential Blurrer</title>
+    <link rel="stylesheet" href="styles/popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <div class="header">
+            <h1>🔒 Credential Blurrer</h1>
+        </div>
+        
+        <div class="content">
+            <div class="toggle-section">
+                <label class="toggle-label">
+                    <span>Enable Blurring</span>
+                    <input type="checkbox" id="toggleEnabled" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="stats-section">
+                <div class="stat-item">
+                    <span class="stat-label">Detected Credentials:</span>
+                    <span class="stat-value" id="detectedCount">0</span>
+                </div>
+            </div>
+            
+            <div class="credential-types">
+                <h3>Detection Types</h3>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="detectPasswords" checked>
+                    <span>Passwords</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="detectApiKeys" checked>
+                    <span>API Keys & Tokens</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="detectEmails" checked>
+                    <span>Email Addresses</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="detectUsernames" checked>
+                    <span>Usernames</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="detectCreditCards" checked>
+                    <span>Credit Cards</span>
+                </label>
+            </div>
+            
+            <div class="actions">
+                <button id="refreshBtn" class="btn btn-secondary">Refresh Page</button>
+                <button id="optionsBtn" class="btn btn-primary">Options</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
+

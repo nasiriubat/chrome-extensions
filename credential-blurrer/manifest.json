@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Credential Blurrer",
+  "version": "1.0.0",
+  "description": "Automatically detects and blurs sensitive credentials (passwords, API keys, emails, credit cards) on web pages. Hover to reveal.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js"],
+      "css": ["styles/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options.html"
+}
+

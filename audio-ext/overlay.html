@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Player</title>
+  <link rel="stylesheet" href="overlay.css">
+</head>
+<body>
+  <div class="audio-widget" id="audioWidget">
+    <div class="widget-bar" id="widgetBar">
+      <button class="play-btn" id="playPauseBtn" disabled>
+        <span id="playPauseIcon">▶</span>
+      </button>
+      <div class="progress-section">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="time-display">
+          <span id="currentTime">0:00</span><span class="separator">/</span><span id="totalTime">0:00</span>
+        </div>
+      </div>
+      <div class="status-indicator" id="statusIndicator">
+        <div class="loading-spinner" id="loadingSpinner"></div>
+      </div>
+      <button class="icon-btn" id="regenerateBtn" title="Regenerate" disabled>🔄</button>
+      <button class="icon-btn download-btn" id="downloadBtn" disabled title="Download">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+      </button>
+      <button class="close-btn" id="closeBtn" title="Close">×</button>
+    </div>
+  </div>
+  <script src="overlay.js"></script>
+</body>
+</html>
+

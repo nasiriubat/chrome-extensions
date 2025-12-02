@@ -1,0 +1,252 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: transparent;
+  overflow: hidden;
+}
+
+.audio-widget {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  user-select: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 320px;
+  max-width: 500px;
+}
+
+.widget-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: move;
+  user-select: none;
+}
+
+.widget-bar:active {
+  cursor: grabbing;
+}
+
+.play-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.play-btn:hover:not(:disabled) {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.play-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.play-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.progress-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.time-display {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 10px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.separator {
+  margin: 0 2px;
+  color: #999;
+}
+
+.status-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #27ae60;
+  flex-shrink: 0;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.status-indicator.loading {
+  background: transparent;
+  width: 20px;
+  height: 20px;
+}
+
+.status-indicator.error {
+  background: #e74c3c;
+  animation: shake 0.5s ease-in-out;
+}
+
+.status-indicator.hidden {
+  display: none;
+}
+
+.loading-spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.status-indicator.loading .loading-spinner {
+  display: block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+.icon-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: #f0f0f0;
+  color: #333;
+  transform: scale(1.1);
+}
+
+.icon-btn:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  color: white;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+
+.download-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.4);
+}
+
+.download-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.download-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.download-btn:disabled {
+  background: #e0e0e0;
+  opacity: 0.5;
+}
+
+.close-btn {
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  padding: 0;
+  margin-left: 4px;
+}
+
+.close-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}

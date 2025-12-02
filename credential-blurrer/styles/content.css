@@ -1,0 +1,54 @@
+/* Credential Blurrer - Content Styles */
+
+.credential-blurred {
+    filter: blur(var(--blur-intensity, 8px));
+    user-select: none;
+    pointer-events: auto;
+    transition: filter 0.2s ease;
+    position: relative;
+    display: inline-block;
+}
+
+.credential-blurred:hover {
+    filter: blur(0px);
+    z-index: 10000;
+}
+
+.credential-blurred::after {
+    content: '🔒';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.3;
+    font-size: 0.8em;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.credential-blurred:hover::after {
+    opacity: 0;
+}
+
+/* Ensure input fields remain functional */
+input.credential-blurred,
+textarea.credential-blurred {
+    cursor: text;
+}
+
+input.credential-blurred:hover,
+textarea.credential-blurred:hover {
+    filter: blur(0px);
+}
+
+/* Prevent blur on focus for inputs */
+input.credential-blurred:focus,
+textarea.credential-blurred:focus {
+    filter: blur(0px);
+}
+
+input.credential-blurred:focus::after,
+textarea.credential-blurred:focus::after {
+    opacity: 0;
+}
+
