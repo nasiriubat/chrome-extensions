@@ -2,17 +2,18 @@
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'processAndGenerateAudio') {
-    handleProcessAndGenerateAudio(request.text, sendResponse);
+    handleProcessAndGenerateAudio(request.text, request.processingMode, sendResponse);
     return true; // Keep channel open for async response
   }
 });
 
-async function handleProcessAndGenerateAudio(text, sendResponse) {
+async function handleProcessAndGenerateAudio(text, processingMode, sendResponse) {
   try {
-    // Get API key and model from storage
-    const result = await chrome.storage.local.get(['openaiApiKey', 'gptModel']);
+    // Get API key, model, and processing mode from storage
+    const result = await chrome.storage.local.get(['openaiApiKey', 'gptModel', 'processingMode']);
     const apiKey = result.openaiApiKey;
     const model = result.gptModel || 'gpt-3.5-turbo'; // Default model
+    const mode = processingMode || result.processingMode || 'as_it_is'; // Default processing mode
 
     if (!apiKey) {
       sendResponse({ 
@@ -22,8 +23,8 @@ async function handleProcessAndGenerateAudio(text, sendResponse) {
       return;
     }
 
-    // Step 1: Process text with GPT
-    const processedText = await processTextWithGPT(text, apiKey, model);
+    // Step 1: Process text with GPT based on processing mode
+    const processedText = await processTextWithGPT(text, apiKey, model, mode);
     
     // Step 2: Generate audio with TTS
     const audioBlob = await generateAudioWithTTS(processedText, apiKey);
@@ -45,7 +46,19 @@ async function handleProcessAndGenerateAudio(text, sendResponse) {
   }
 }
 
-async function processTextWithGPT(text, apiKey, model = 'gpt-3.5-turbo') {
+async function processTextWithGPT(text, apiKey, model = 'gpt-3.5-turbo', processingMode = 'as_it_is') {
+  // Determine prompt based on processing mode
+  let systemPrompt, userPrompt;
+  
+  if (processingMode === 'summary') {
+    systemPrompt = 'You are a helpful assistant that creates concise summaries for audio reading. Summarize the text while maintaining key points and making it suitable for natural speech.';
+    userPrompt = `Summarize this text concisely for audio reading, maintaining key points:\n\n${text}`;
+  } else {
+    // Default: "as_it_is" - format for speech without summarization
+    systemPrompt = 'You are a helpful assistant that improves text for natural speech reading. Format the text to be clear and easy to read aloud while maintaining the original meaning.';
+    userPrompt = `Improve and format this text for natural speech reading, maintaining meaning:\n\n${text}`;
+  }
+  
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -57,11 +70,11 @@ async function processTextWithGPT(text, apiKey, model = 'gpt-3.5-turbo') {
       messages: [
         {
           role: 'system',
-          content: 'You are a helpful assistant that improves text for natural speech reading. Format the text to be clear and easy to read aloud while maintaining the original meaning.'
+          content: systemPrompt
         },
         {
           role: 'user',
-          content: `Improve and format this text for natural speech reading, maintaining meaning:\n\n${text}`
+          content: userPrompt
         }
       ],
       max_tokens: 1000,

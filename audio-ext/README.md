@@ -61,3 +61,5 @@ A Chrome extension that extracts main content from web pages, processes it with 
 - Audio is limited to ~4000 characters for optimal performance
 - The widget position is saved and restored between sessions
 
+
+

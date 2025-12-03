@@ -125,3 +125,5 @@ If you encounter issues:
 3. Check Chrome's console for error messages (F12 → Console)
 4. Make sure you're on a webpage with text content
 
+
+

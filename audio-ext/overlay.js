@@ -4,6 +4,7 @@ let audio = null;
 let isDragging = false;
 let currentPosition = { x: 20, y: 20 };
 let dragOffset = { x: 0, y: 0 };
+let processingMode = 'as_it_is'; // Default processing mode
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -104,6 +105,12 @@ let contentTimeout = null;
 
 // Listen for postMessage responses from content script
 window.addEventListener('message', (event) => {
+  // Handle processing mode setting
+  if (event.data && event.data.action === 'setProcessingMode') {
+    processingMode = event.data.processingMode || 'as_it_is';
+    return;
+  }
+  
   // Only process messages that look like responses from our content script
   if (event.data && typeof event.data === 'object' && 'success' in event.data) {
     if (event.data.action === 'extractContent' || event.data.content !== undefined) {
@@ -153,31 +160,39 @@ function handleContentExtracted(response) {
 
   updateStatus('Processing with AI...', 'loading');
   
-  // Request background script to process and generate audio
-  chrome.runtime.sendMessage({
-    action: 'processAndGenerateAudio',
-    text: response.content
-  }, (audioResponse) => {
-    // Check for runtime errors
-    if (chrome.runtime.lastError) {
-      updateStatus('Error: ' + chrome.runtime.lastError.message, 'error');
-      console.error('Runtime error:', chrome.runtime.lastError.message);
-      return;
+  // Get processing mode from storage if not set
+  chrome.storage.local.get(['processingMode'], (result) => {
+    if (result.processingMode) {
+      processingMode = result.processingMode;
     }
     
-    if (!audioResponse || !audioResponse.success) {
-      const errorMsg = audioResponse?.error || 'Failed to generate audio';
-      updateStatus(errorMsg, 'error');
-      console.error('Audio generation error:', errorMsg);
-      return;
-    }
+    // Request background script to process and generate audio
+    chrome.runtime.sendMessage({
+      action: 'processAndGenerateAudio',
+      text: response.content,
+      processingMode: processingMode
+    }, (audioResponse) => {
+      // Check for runtime errors
+      if (chrome.runtime.lastError) {
+        updateStatus('Error: ' + chrome.runtime.lastError.message, 'error');
+        console.error('Runtime error:', chrome.runtime.lastError.message);
+        return;
+      }
+      
+      if (!audioResponse || !audioResponse.success) {
+        const errorMsg = audioResponse?.error || 'Failed to generate audio';
+        updateStatus(errorMsg, 'error');
+        console.error('Audio generation error:', errorMsg);
+        return;
+      }
 
-    // Create audio element
-    audio = new Audio(audioResponse.audioUrl);
-    setupAudioListeners();
-    
-    updateStatus('Ready to play', 'success');
-    enableControls();
+      // Create audio element
+      audio = new Audio(audioResponse.audioUrl);
+      setupAudioListeners();
+      
+      updateStatus('Ready to play', 'success');
+      enableControls();
+    });
   });
 }
 

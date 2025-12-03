@@ -103,6 +103,14 @@
     <div class="info">Select the model for text processing.</div>
   </div>
   <button id="saveBtn">Save Settings</button>
+  <div class="form-group" style="margin-top: 16px;">
+    <label for="processingMode">Processing Mode</label>
+    <select id="processingMode" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; background: white;">
+      <option value="as_it_is">As it is</option>
+      <option value="summary">Summary</option>
+    </select>
+    <div class="info">How to process the content before generating audio.</div>
+  </div>
   <button id="generateBtn" style="margin-top: 12px; background: #27ae60;">Generate Audio</button>
   <div id="status" class="status"></div>
   <script src="popup.js"></script>

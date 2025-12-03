@@ -72,9 +72,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'showOverlay') {
     // Inject overlay iframe
     const overlayId = 'audio-extension-overlay';
+    const processingMode = request.processingMode || 'as_it_is';
+    
     if (document.getElementById(overlayId)) {
-      // Overlay already exists, just show it
-      document.getElementById(overlayId).style.display = 'block';
+      // Overlay already exists, just show it and pass processing mode
+      const iframe = document.getElementById(overlayId);
+      if (iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ 
+          action: 'setProcessingMode', 
+          processingMode: processingMode 
+        }, '*');
+      }
+      iframe.style.display = 'block';
       sendResponse({ success: true });
       return;
     }
@@ -98,6 +107,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     
     // Enable pointer events on the iframe itself
     iframe.style.pointerEvents = 'auto';
+    
+    // Wait for iframe to load, then send processing mode
+    iframe.onload = () => {
+      setTimeout(() => {
+        if (iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ 
+            action: 'setProcessingMode', 
+            processingMode: processingMode 
+          }, '*');
+        }
+      }, 100);
+    };
     
     // Wait for iframe to load, then adjust its size to fit content
     iframe.onload = () => {

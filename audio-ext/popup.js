@@ -7,13 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const generateBtn = document.getElementById('generateBtn');
   const statusEl = document.getElementById('status');
 
+  const processingModeSelect = document.getElementById('processingMode');
+
   // Load saved settings
-  chrome.storage.local.get(['openaiApiKey', 'gptModel'], (result) => {
+  chrome.storage.local.get(['openaiApiKey', 'gptModel', 'processingMode'], (result) => {
     if (result.openaiApiKey) {
       apiKeyInput.value = result.openaiApiKey;
     }
     if (result.gptModel) {
       modelSelect.value = result.gptModel;
+    }
+    if (result.processingMode) {
+      processingModeSelect.value = result.processingMode;
     }
   });
 
@@ -73,11 +78,20 @@ function showStatus(message, type) {
 }
 
 function triggerAudioGeneration() {
+  // Get current processing mode
+  const processingMode = document.getElementById('processingMode').value;
+  
+  // Save processing mode for future use
+  chrome.storage.local.set({ processingMode: processingMode });
+  
   // Get current active tab
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs[0]) {
       // Send message to content script to show overlay and generate audio
-      chrome.tabs.sendMessage(tabs[0].id, { action: 'showOverlay' }, (response) => {
+      chrome.tabs.sendMessage(tabs[0].id, { 
+        action: 'showOverlay',
+        processingMode: processingMode
+      }, (response) => {
         if (chrome.runtime.lastError) {
           console.error('Error:', chrome.runtime.lastError);
         } else {
